@@ -5,7 +5,9 @@ use std::collections::HashMap;
 /// Compute the true circuit depth via critical-path analysis on the gate DAG.
 /// Depth = length of the longest chain of gates with data dependencies.
 pub fn compute_depth(gates: &[Gate]) -> usize {
-    if gates.is_empty() { return 0; }
+    if gates.is_empty() {
+        return 0;
+    }
 
     // For each qubit, track the layer its most recent gate was assigned to.
     let mut qubit_layer: HashMap<String, usize> = HashMap::new();
@@ -13,10 +15,14 @@ pub fn compute_depth(gates: &[Gate]) -> usize {
     let mut max_depth = 0usize;
 
     for gate in gates {
-        if matches!(gate, Gate::Barrier(_)) { continue; }
+        if matches!(gate, Gate::Barrier(_)) {
+            continue;
+        }
 
         let qubits = gate_qubits(gate);
-        if qubits.is_empty() { continue; }
+        if qubits.is_empty() {
+            continue;
+        }
 
         // This gate must go in a layer after all its qubit dependencies.
         let earliest = qubits
@@ -31,7 +37,9 @@ pub fn compute_depth(gates: &[Gate]) -> usize {
             qubit_layer.insert(qubit_key(q), layer);
         }
 
-        if layer > max_depth { max_depth = layer; }
+        if layer > max_depth {
+            max_depth = layer;
+        }
     }
 
     max_depth
@@ -43,10 +51,19 @@ fn qubit_key(q: &QubitRef) -> String {
 
 fn gate_qubits(gate: &Gate) -> Vec<QubitRef> {
     match gate {
-        Gate::H(q) | Gate::X(q) | Gate::Y(q) | Gate::Z(q)
-        | Gate::S(q) | Gate::Sdg(q) | Gate::T(q) | Gate::Tdg(q)
-        | Gate::Rx(_, q) | Gate::Ry(_, q) | Gate::Rz(_, q)
-        | Gate::U1(_, q) | Gate::Reset(q) => vec![q.clone()],
+        Gate::H(q)
+        | Gate::X(q)
+        | Gate::Y(q)
+        | Gate::Z(q)
+        | Gate::S(q)
+        | Gate::Sdg(q)
+        | Gate::T(q)
+        | Gate::Tdg(q)
+        | Gate::Rx(_, q)
+        | Gate::Ry(_, q)
+        | Gate::Rz(_, q)
+        | Gate::U1(_, q)
+        | Gate::Reset(q) => vec![q.clone()],
 
         Gate::U2(_, _, q) | Gate::U3(_, _, _, q) => vec![q.clone()],
 
@@ -62,14 +79,15 @@ fn gate_qubits(gate: &Gate) -> Vec<QubitRef> {
     }
 }
 
-
 #[cfg(test)]
 mod tests {
     use super::*;
     use crate::gate::Gate;
     use crate::qubit::QubitRef;
 
-    fn q(i: usize) -> QubitRef { QubitRef::new("q", i) }
+    fn q(i: usize) -> QubitRef {
+        QubitRef::new("q", i)
+    }
 
     #[test]
     fn empty_circuit_depth_zero() {
@@ -123,11 +141,7 @@ mod tests {
     #[test]
     fn ghz_depth() {
         // H q0, CX q0 q1, CX q0 q2 — depth 3 (CX q0 q1 and CX q0 q2 are sequential via q0)
-        let gates = vec![
-            Gate::H(q(0)),
-            Gate::Cx(q(0), q(1)),
-            Gate::Cx(q(0), q(2)),
-        ];
+        let gates = vec![Gate::H(q(0)), Gate::Cx(q(0), q(1)), Gate::Cx(q(0), q(2))];
         assert_eq!(compute_depth(&gates), 3);
     }
 }

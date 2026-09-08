@@ -37,7 +37,9 @@ pub fn allocate_qubits(circuit: &Circuit, topology: &HardwareTopology) -> Vec<us
     pairs.sort_by(|a, b| b.1.cmp(&a.1));
 
     for ((l0, l1), _) in &pairs {
-        if mapping[*l0] != usize::MAX && mapping[*l1] != usize::MAX { continue; }
+        if mapping[*l0] != usize::MAX && mapping[*l1] != usize::MAX {
+            continue;
+        }
 
         if mapping[*l0] == usize::MAX && mapping[*l1] == usize::MAX {
             // Find the best adjacent physical pair
@@ -49,7 +51,8 @@ pub fn allocate_qubits(circuit: &Circuit, topology: &HardwareTopology) -> Vec<us
         } else if mapping[*l0] != usize::MAX {
             // l0 is placed, find best neighbour for l1
             let p0 = mapping[*l0];
-            let nb = topology.neighbours(p0)
+            let nb = topology
+                .neighbours(p0)
                 .into_iter()
                 .filter(|p| !used.contains(p))
                 .min_by_key(|p| dist[p0][*p])
@@ -59,7 +62,8 @@ pub fn allocate_qubits(circuit: &Circuit, topology: &HardwareTopology) -> Vec<us
         } else {
             // l1 is placed, find best neighbour for l0
             let p1 = mapping[*l1];
-            let nb = topology.neighbours(p1)
+            let nb = topology
+                .neighbours(p1)
                 .into_iter()
                 .filter(|p| !used.contains(p))
                 .min_by_key(|p| dist[p1][*p])
@@ -80,14 +84,19 @@ pub fn allocate_qubits(circuit: &Circuit, topology: &HardwareTopology) -> Vec<us
     mapping
 }
 
-fn best_adjacent_pair(topology: &HardwareTopology, used: &std::collections::HashSet<usize>) -> (usize, usize) {
+fn best_adjacent_pair(
+    topology: &HardwareTopology,
+    used: &std::collections::HashSet<usize>,
+) -> (usize, usize) {
     for edge in &topology.coupling_map {
         if !used.contains(&edge.source) && !used.contains(&edge.target) {
             return (edge.source, edge.target);
         }
     }
     // Fallback: any two free qubits
-    let free: Vec<usize> = (0..topology.qubit_count).filter(|q| !used.contains(q)).collect();
+    let free: Vec<usize> = (0..topology.qubit_count)
+        .filter(|q| !used.contains(q))
+        .collect();
     (free[0], if free.len() > 1 { free[1] } else { free[0] })
 }
 

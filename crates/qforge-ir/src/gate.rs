@@ -32,7 +32,7 @@ pub enum Gate {
     Reset(QubitRef),
     // Custom gate call
     Custom {
-        name:   String,
+        name: String,
         params: Vec<f64>,
         qubits: Vec<QubitRef>,
     },
@@ -41,11 +41,22 @@ pub enum Gate {
 impl Gate {
     pub fn qubit_count(&self) -> usize {
         match self {
-            Gate::H(_)  | Gate::X(_)  | Gate::Y(_)  | Gate::Z(_)
-          | Gate::S(_)  | Gate::Sdg(_)| Gate::T(_)  | Gate::Tdg(_)
-          | Gate::Rx(_, _) | Gate::Ry(_, _) | Gate::Rz(_, _)
-          | Gate::U1(_, _) | Gate::U2(_, _, _) | Gate::U3(_, _, _, _)
-          | Gate::Measure(_, _) | Gate::Reset(_) => 1,
+            Gate::H(_)
+            | Gate::X(_)
+            | Gate::Y(_)
+            | Gate::Z(_)
+            | Gate::S(_)
+            | Gate::Sdg(_)
+            | Gate::T(_)
+            | Gate::Tdg(_)
+            | Gate::Rx(_, _)
+            | Gate::Ry(_, _)
+            | Gate::Rz(_, _)
+            | Gate::U1(_, _)
+            | Gate::U2(_, _, _)
+            | Gate::U3(_, _, _, _)
+            | Gate::Measure(_, _)
+            | Gate::Reset(_) => 1,
             Gate::Cx(_, _) | Gate::Cz(_, _) | Gate::Swap(_, _) => 2,
             Gate::Ccx(_, _, _) => 3,
             Gate::Barrier(qs) => qs.len(),
@@ -63,13 +74,13 @@ impl Gate {
 
     pub fn name(&self) -> &str {
         match self {
-            Gate::H(_)   => "h",
-            Gate::X(_)   => "x",
-            Gate::Y(_)   => "y",
-            Gate::Z(_)   => "z",
-            Gate::S(_)   => "s",
+            Gate::H(_) => "h",
+            Gate::X(_) => "x",
+            Gate::Y(_) => "y",
+            Gate::Z(_) => "z",
+            Gate::S(_) => "s",
             Gate::Sdg(_) => "sdg",
-            Gate::T(_)   => "t",
+            Gate::T(_) => "t",
             Gate::Tdg(_) => "tdg",
             Gate::Rx(_, _) => "rx",
             Gate::Ry(_, _) => "ry",
@@ -77,13 +88,13 @@ impl Gate {
             Gate::U1(_, _) => "u1",
             Gate::U2(_, _, _) => "u2",
             Gate::U3(_, _, _, _) => "u3",
-            Gate::Cx(_, _)  => "cx",
-            Gate::Cz(_, _)  => "cz",
+            Gate::Cx(_, _) => "cx",
+            Gate::Cz(_, _) => "cz",
             Gate::Swap(_, _) => "swap",
             Gate::Ccx(_, _, _) => "ccx",
             Gate::Measure(_, _) => "measure",
-            Gate::Barrier(_)    => "barrier",
-            Gate::Reset(_)      => "reset",
+            Gate::Barrier(_) => "barrier",
+            Gate::Reset(_) => "reset",
             Gate::Custom { name, .. } => name,
         }
     }

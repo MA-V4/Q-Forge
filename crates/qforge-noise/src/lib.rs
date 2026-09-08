@@ -1,7 +1,7 @@
-pub mod model;
-pub mod estimator;
 pub mod cost;
+pub mod estimator;
+pub mod model;
 
-pub use model::{NoiseModel, QubitError, GateError};
+pub use cost::{CompilationStrategy, CostFunction};
 pub use estimator::estimate_fidelity;
-pub use cost::{CostFunction, CompilationStrategy};
+pub use model::{GateError, NoiseModel, QubitError};

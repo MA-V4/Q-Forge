@@ -8,17 +8,22 @@ use qforge_ir::{Circuit, Gate};
 pub struct IdentityElimination;
 
 impl Pass for IdentityElimination {
-    fn name(&self) -> &str { "identity_elimination" }
+    fn name(&self) -> &str {
+        "identity_elimination"
+    }
 
     fn run(&self, mut circuit: Circuit) -> (Circuit, PassReport) {
         let before = circuit.gate_count();
         circuit.gates.retain(|g| !is_identity(g));
         let removed = before as i64 - circuit.gate_count() as i64;
-        (circuit, PassReport {
-            pass_name:     self.name().into(),
-            gates_removed: removed,
-            reason:        format!("removed {} identity gate(s)", removed),
-        })
+        (
+            circuit,
+            PassReport {
+                pass_name: self.name().into(),
+                gates_removed: removed,
+                reason: format!("removed {} identity gate(s)", removed),
+            },
+        )
     }
 }
 

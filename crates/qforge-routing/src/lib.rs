@@ -1,9 +1,9 @@
-pub mod topology;
 pub mod allocator;
-pub mod sabre;
 pub mod report;
+pub mod sabre;
+pub mod topology;
 
-pub use topology::{HardwareTopology, CouplingEdge};
 pub use allocator::allocate_qubits;
-pub use sabre::route;
 pub use report::RoutingReport;
+pub use sabre::route;
+pub use topology::{CouplingEdge, HardwareTopology};

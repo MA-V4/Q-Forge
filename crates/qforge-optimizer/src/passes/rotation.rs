@@ -8,11 +8,13 @@ use qforge_ir::{Circuit, Gate};
 pub struct RotationMerging;
 
 impl Pass for RotationMerging {
-    fn name(&self) -> &str { "rotation_merging" }
+    fn name(&self) -> &str {
+        "rotation_merging"
+    }
 
     fn run(&self, mut circuit: Circuit) -> (Circuit, PassReport) {
         let before = circuit.gate_count();
-        let gates  = std::mem::take(&mut circuit.gates);
+        let gates = std::mem::take(&mut circuit.gates);
         let mut out: Vec<Gate> = Vec::with_capacity(gates.len());
 
         for gate in gates {
@@ -38,17 +40,23 @@ impl Pass for RotationMerging {
         }
 
         // Remove zero rotations
-        let out: Vec<Gate> = out.into_iter().filter(|g| match g {
-            Gate::Rz(a, _) | Gate::Rx(a, _) | Gate::Ry(a, _) => a.abs() > 1e-10,
-            _ => true,
-        }).collect();
+        let out: Vec<Gate> = out
+            .into_iter()
+            .filter(|g| match g {
+                Gate::Rz(a, _) | Gate::Rx(a, _) | Gate::Ry(a, _) => a.abs() > 1e-10,
+                _ => true,
+            })
+            .collect();
 
         circuit.gates = out;
         let removed = before as i64 - circuit.gate_count() as i64;
-        (circuit, PassReport {
-            pass_name:     self.name().into(),
-            gates_removed: removed,
-            reason:        format!("merged {} rotation(s)", removed),
-        })
+        (
+            circuit,
+            PassReport {
+                pass_name: self.name().into(),
+                gates_removed: removed,
+                reason: format!("merged {} rotation(s)", removed),
+            },
+        )
     }
 }

@@ -2,8 +2,11 @@
 // Consumes a token stream from the lexer and produces a Circuit.
 // Phase 1 deliverable.
 
-use qforge_ir::{Circuit, Gate, QubitRef, CbitRef};
-use crate::{error::ParseError, lexer::{Lexer, Token}};
+use crate::{
+    error::ParseError,
+    lexer::{Lexer, Token},
+};
+use qforge_ir::{CbitRef, Circuit, Gate, QubitRef};
 use std::f64::consts::PI;
 
 pub fn parse(source: &str) -> Result<Circuit, ParseError> {
@@ -13,23 +16,30 @@ pub fn parse(source: &str) -> Result<Circuit, ParseError> {
 
 struct Parser {
     tokens: Vec<Token>,
-    pos:    usize,
+    pos: usize,
 }
 
 impl Parser {
-    fn new(tokens: Vec<Token>) -> Self { Self { tokens, pos: 0 } }
+    fn new(tokens: Vec<Token>) -> Self {
+        Self { tokens, pos: 0 }
+    }
 
-    fn peek(&self) -> &Token { self.tokens.get(self.pos).unwrap_or(&Token::Eof) }
+    fn peek(&self) -> &Token {
+        self.tokens.get(self.pos).unwrap_or(&Token::Eof)
+    }
 
     fn advance(&mut self) -> Token {
         let t = self.tokens.get(self.pos).cloned().unwrap_or(Token::Eof);
-        if self.pos < self.tokens.len() - 1 { self.pos += 1; }
+        if self.pos < self.tokens.len() - 1 {
+            self.pos += 1;
+        }
         t
     }
 
     fn expect(&mut self, expected: &Token) -> Result<(), ParseError> {
         if self.peek() == expected {
-            self.advance(); Ok(())
+            self.advance();
+            Ok(())
         } else {
             Err(ParseError::UnexpectedToken {
                 line: 0,
@@ -42,7 +52,8 @@ impl Parser {
         match self.advance() {
             Token::Ident(s) => Ok(s),
             other => Err(ParseError::UnexpectedToken {
-                line: 0, message: format!("expected identifier, got {:?}", other),
+                line: 0,
+                message: format!("expected identifier, got {:?}", other),
             }),
         }
     }
@@ -51,7 +62,8 @@ impl Parser {
         match self.advance() {
             Token::Integer(n) if n >= 0 => Ok(n as usize),
             other => Err(ParseError::UnexpectedToken {
-                line: 0, message: format!("expected integer, got {:?}", other),
+                line: 0,
+                message: format!("expected integer, got {:?}", other),
             }),
         }
     }
@@ -106,14 +118,18 @@ impl Parser {
                     while !matches!(self.peek(), Token::RBrace | Token::Eof) {
                         self.advance();
                     }
-                    if self.peek() == &Token::RBrace { self.advance(); }
+                    if self.peek() == &Token::RBrace {
+                        self.advance();
+                    }
                 }
                 Token::Opaque => {
                     self.advance();
                     while !matches!(self.peek(), Token::Semicolon | Token::Eof) {
                         self.advance();
                     }
-                    if self.peek() == &Token::Semicolon { self.advance(); }
+                    if self.peek() == &Token::Semicolon {
+                        self.advance();
+                    }
                 }
                 Token::Barrier => {
                     self.advance();
@@ -121,8 +137,11 @@ impl Parser {
                     loop {
                         let q = self.parse_qubit_ref(&circuit)?;
                         qubits.push(q);
-                        if self.peek() == &Token::Comma { self.advance(); }
-                        else { break; }
+                        if self.peek() == &Token::Comma {
+                            self.advance();
+                        } else {
+                            break;
+                        }
                     }
                     self.expect(&Token::Semicolon)?;
                     circuit.push(Gate::Barrier(qubits));
@@ -148,7 +167,9 @@ impl Parser {
                     self.expect(&Token::Semicolon)?;
                     circuit.push(gate);
                 }
-                _ => { self.advance(); }
+                _ => {
+                    self.advance();
+                }
             }
         }
 
@@ -165,7 +186,11 @@ impl Parser {
         self.expect(&Token::RBracket)?;
         let size = circuit.qregs[&reg];
         if idx >= size {
-            return Err(ParseError::IndexOutOfBounds { register: reg, index: idx, size });
+            return Err(ParseError::IndexOutOfBounds {
+                register: reg,
+                index: idx,
+                size,
+            });
         }
         Ok(QubitRef::new(reg, idx))
     }
@@ -182,14 +207,19 @@ impl Parser {
     }
 
     fn parse_params(&mut self) -> Result<Vec<f64>, ParseError> {
-        if self.peek() != &Token::LParen { return Ok(vec![]); }
+        if self.peek() != &Token::LParen {
+            return Ok(vec![]);
+        }
         self.advance();
         let mut params = Vec::new();
         loop {
             let p = self.parse_expr()?;
             params.push(p);
-            if self.peek() == &Token::Comma { self.advance(); }
-            else { break; }
+            if self.peek() == &Token::Comma {
+                self.advance();
+            } else {
+                break;
+            }
         }
         self.expect(&Token::RParen)?;
         Ok(params)
@@ -199,11 +229,26 @@ impl Parser {
         let mut val = self.parse_unary()?;
         loop {
             match self.peek() {
-                Token::Plus  => { self.advance(); val += self.parse_unary()?; }
-                Token::Minus => { self.advance(); val -= self.parse_unary()?; }
-                Token::Star  => { self.advance(); val *= self.parse_unary()?; }
-                Token::Slash => { self.advance(); val /= self.parse_unary()?; }
-                Token::Caret => { self.advance(); val = val.powf(self.parse_unary()?); }
+                Token::Plus => {
+                    self.advance();
+                    val += self.parse_unary()?;
+                }
+                Token::Minus => {
+                    self.advance();
+                    val -= self.parse_unary()?;
+                }
+                Token::Star => {
+                    self.advance();
+                    val *= self.parse_unary()?;
+                }
+                Token::Slash => {
+                    self.advance();
+                    val /= self.parse_unary()?;
+                }
+                Token::Caret => {
+                    self.advance();
+                    val = val.powf(self.parse_unary()?);
+                }
                 _ => break,
             }
         }
@@ -220,27 +265,59 @@ impl Parser {
 
     fn parse_primary(&mut self) -> Result<f64, ParseError> {
         match self.advance() {
-            Token::Real(v)    => Ok(v),
+            Token::Real(v) => Ok(v),
             Token::Integer(n) => Ok(n as f64),
-            Token::LParen     => {
+            Token::LParen => {
                 let v = self.parse_expr()?;
                 self.expect(&Token::RParen)?;
                 Ok(v)
             }
-            Token::Ident(s) => {
-                match s.as_str() {
-                    "pi" => Ok(PI),
-                    "sin" => { self.expect(&Token::LParen)?; let v = self.parse_expr()?; self.expect(&Token::RParen)?; Ok(v.sin()) }
-                    "cos" => { self.expect(&Token::LParen)?; let v = self.parse_expr()?; self.expect(&Token::RParen)?; Ok(v.cos()) }
-                    "tan" => { self.expect(&Token::LParen)?; let v = self.parse_expr()?; self.expect(&Token::RParen)?; Ok(v.tan()) }
-                    "exp" => { self.expect(&Token::LParen)?; let v = self.parse_expr()?; self.expect(&Token::RParen)?; Ok(v.exp()) }
-                    "ln"  => { self.expect(&Token::LParen)?; let v = self.parse_expr()?; self.expect(&Token::RParen)?; Ok(v.ln()) }
-                    "sqrt"=> { self.expect(&Token::LParen)?; let v = self.parse_expr()?; self.expect(&Token::RParen)?; Ok(v.sqrt()) }
-                    _ => Err(ParseError::InvalidParameter(format!("unknown function: {}", s))),
+            Token::Ident(s) => match s.as_str() {
+                "pi" => Ok(PI),
+                "sin" => {
+                    self.expect(&Token::LParen)?;
+                    let v = self.parse_expr()?;
+                    self.expect(&Token::RParen)?;
+                    Ok(v.sin())
                 }
-            }
+                "cos" => {
+                    self.expect(&Token::LParen)?;
+                    let v = self.parse_expr()?;
+                    self.expect(&Token::RParen)?;
+                    Ok(v.cos())
+                }
+                "tan" => {
+                    self.expect(&Token::LParen)?;
+                    let v = self.parse_expr()?;
+                    self.expect(&Token::RParen)?;
+                    Ok(v.tan())
+                }
+                "exp" => {
+                    self.expect(&Token::LParen)?;
+                    let v = self.parse_expr()?;
+                    self.expect(&Token::RParen)?;
+                    Ok(v.exp())
+                }
+                "ln" => {
+                    self.expect(&Token::LParen)?;
+                    let v = self.parse_expr()?;
+                    self.expect(&Token::RParen)?;
+                    Ok(v.ln())
+                }
+                "sqrt" => {
+                    self.expect(&Token::LParen)?;
+                    let v = self.parse_expr()?;
+                    self.expect(&Token::RParen)?;
+                    Ok(v.sqrt())
+                }
+                _ => Err(ParseError::InvalidParameter(format!(
+                    "unknown function: {}",
+                    s
+                ))),
+            },
             other => Err(ParseError::UnexpectedToken {
-                line: 0, message: format!("expected number, got {:?}", other),
+                line: 0,
+                message: format!("expected number, got {:?}", other),
             }),
         }
     }
@@ -249,24 +326,51 @@ impl Parser {
         let params = self.parse_params()?;
 
         match name {
-            "h"   => Ok(Gate::H(self.parse_qubit_ref(circuit)?)),
-            "x"   => Ok(Gate::X(self.parse_qubit_ref(circuit)?)),
-            "y"   => Ok(Gate::Y(self.parse_qubit_ref(circuit)?)),
-            "z"   => Ok(Gate::Z(self.parse_qubit_ref(circuit)?)),
-            "s"   => Ok(Gate::S(self.parse_qubit_ref(circuit)?)),
+            "h" => Ok(Gate::H(self.parse_qubit_ref(circuit)?)),
+            "x" => Ok(Gate::X(self.parse_qubit_ref(circuit)?)),
+            "y" => Ok(Gate::Y(self.parse_qubit_ref(circuit)?)),
+            "z" => Ok(Gate::Z(self.parse_qubit_ref(circuit)?)),
+            "s" => Ok(Gate::S(self.parse_qubit_ref(circuit)?)),
             "sdg" => Ok(Gate::Sdg(self.parse_qubit_ref(circuit)?)),
-            "t"   => Ok(Gate::T(self.parse_qubit_ref(circuit)?)),
+            "t" => Ok(Gate::T(self.parse_qubit_ref(circuit)?)),
             "tdg" => Ok(Gate::Tdg(self.parse_qubit_ref(circuit)?)),
-            "rx"  => { let q = self.parse_qubit_ref(circuit)?; Ok(Gate::Rx(params.first().copied().unwrap_or(0.0), q)) }
-            "ry"  => { let q = self.parse_qubit_ref(circuit)?; Ok(Gate::Ry(params.first().copied().unwrap_or(0.0), q)) }
-            "rz"  => { let q = self.parse_qubit_ref(circuit)?; Ok(Gate::Rz(params.first().copied().unwrap_or(0.0), q)) }
-            "u1"  => { let q = self.parse_qubit_ref(circuit)?; Ok(Gate::U1(params.first().copied().unwrap_or(0.0), q)) }
-            "u2"  => { let q = self.parse_qubit_ref(circuit)?; Ok(Gate::U2(params.first().copied().unwrap_or(0.0), params.get(1).copied().unwrap_or(0.0), q)) }
-            "u3"  => { let q = self.parse_qubit_ref(circuit)?; Ok(Gate::U3(params.first().copied().unwrap_or(0.0), params.get(1).copied().unwrap_or(0.0), params.get(2).copied().unwrap_or(0.0), q)) }
+            "rx" => {
+                let q = self.parse_qubit_ref(circuit)?;
+                Ok(Gate::Rx(params.first().copied().unwrap_or(0.0), q))
+            }
+            "ry" => {
+                let q = self.parse_qubit_ref(circuit)?;
+                Ok(Gate::Ry(params.first().copied().unwrap_or(0.0), q))
+            }
+            "rz" => {
+                let q = self.parse_qubit_ref(circuit)?;
+                Ok(Gate::Rz(params.first().copied().unwrap_or(0.0), q))
+            }
+            "u1" => {
+                let q = self.parse_qubit_ref(circuit)?;
+                Ok(Gate::U1(params.first().copied().unwrap_or(0.0), q))
+            }
+            "u2" => {
+                let q = self.parse_qubit_ref(circuit)?;
+                Ok(Gate::U2(
+                    params.first().copied().unwrap_or(0.0),
+                    params.get(1).copied().unwrap_or(0.0),
+                    q,
+                ))
+            }
+            "u3" => {
+                let q = self.parse_qubit_ref(circuit)?;
+                Ok(Gate::U3(
+                    params.first().copied().unwrap_or(0.0),
+                    params.get(1).copied().unwrap_or(0.0),
+                    params.get(2).copied().unwrap_or(0.0),
+                    q,
+                ))
+            }
             "cx" | "cnot" => {
                 let ctrl = self.parse_qubit_ref(circuit)?;
                 self.expect(&Token::Comma)?;
-                let tgt  = self.parse_qubit_ref(circuit)?;
+                let tgt = self.parse_qubit_ref(circuit)?;
                 Ok(Gate::Cx(ctrl, tgt))
             }
             "cz" => {
@@ -294,9 +398,17 @@ impl Parser {
                 let mut qubits = Vec::new();
                 while matches!(self.peek(), Token::Ident(_)) {
                     qubits.push(self.parse_qubit_ref(circuit)?);
-                    if self.peek() == &Token::Comma { self.advance(); } else { break; }
+                    if self.peek() == &Token::Comma {
+                        self.advance();
+                    } else {
+                        break;
+                    }
                 }
-                Ok(Gate::Custom { name: name.to_string(), params, qubits })
+                Ok(Gate::Custom {
+                    name: name.to_string(),
+                    params,
+                    qubits,
+                })
             }
         }
     }

@@ -2,9 +2,9 @@ use qforge_ir::Circuit;
 
 #[derive(Debug, Clone)]
 pub struct PassReport {
-    pub pass_name:     String,
+    pub pass_name: String,
     pub gates_removed: i64,
-    pub reason:        String,
+    pub reason: String,
 }
 
 pub trait Pass: Send + Sync {
