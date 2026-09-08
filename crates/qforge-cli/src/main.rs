@@ -99,6 +99,34 @@ fn cmd_compile(args: &[String]) -> Result<()> {
         println!();
     }
 
+        // Noise-aware fidelity estimate
+    let noise = qforge_noise::NoiseModel::ibm_brisbane_like(
+        optimized.qubit_count().max(5)
+    );
+    let strategies = qforge_noise::cost::evaluate_strategies(&optimized, &noise);
+
+    println!("  Noise-aware candidates  ({}):", noise.name);
+    println!("    {:<22} {:>8}  {:>8}  {:>10}", "Strategy", "Gates", "Depth", "Fidelity");
+    println!("    {}", "-".repeat(54));
+    for (i, (s, score)) in strategies.iter().enumerate() {
+        println!("    {:<22} {:>8}  {:>8}  {:>9.2}%  {}",
+            s.name,
+            s.gates,
+            s.depth,
+            s.fidelity.fidelity * 100.0,
+            if i == 0 { "<-- selected" } else { "" },
+        );
+    }
+    if let Some((best, _)) = strategies.first() {
+        println!();
+        println!("  Selected: {}", best.name);
+        println!("    Est. fidelity:   {:.2}%", best.fidelity.fidelity * 100.0);
+        println!("    Circuit time:    {:.0}ns", best.fidelity.total_duration_ns);
+        println!("    Readout error:   {:.2}%", best.fidelity.readout_error * 100.0);
+        println!("    Decoherence:     {:.2}%", best.fidelity.decoherence_error * 100.0);
+    }
+    println!();
+
     println!("  Optimization breakdown");
     let mut total: i64 = 0;
     for pass in &report.passes {

@@ -18,6 +18,11 @@ impl PassManager {
         self
     }
 
+    pub fn add_pass_boxed(&mut self, pass: Box<dyn Pass>) -> &mut Self {
+    self.passes.push(pass);
+    self
+    }
+    
     pub fn run(&self, circuit: Circuit) -> (Circuit, OptimizationReport) {
         let start = Instant::now();
         let input_gates = circuit.gate_count();
