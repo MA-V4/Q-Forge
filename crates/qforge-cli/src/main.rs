@@ -37,10 +37,13 @@ fn cmd_compile(args: &[String]) -> Result<()> {
 
     let t1 = Instant::now();
     let mut pm = qforge_optimizer::PassManager::new();
-    pm.add_pass(qforge_optimizer::passes::cancellation::GateCancellation)
-      .add_pass(qforge_optimizer::passes::rotation::RotationMerging)
-      .add_pass(qforge_optimizer::passes::identity::IdentityElimination)
-      .add_pass(qforge_optimizer::passes::cancellation::GateCancellation);
+    pm.add_pass(qforge_optimizer::IdentityElimination)
+    .add_pass(qforge_optimizer::GateCancellation)
+    .add_pass(qforge_optimizer::RotationMerging)
+    .add_pass(qforge_optimizer::CommutationAnalysis)
+    .add_pass(qforge_optimizer::GateCancellation)
+    .add_pass(qforge_optimizer::RotationMerging)
+    .add_pass(qforge_optimizer::GateCancellation);
     let (_out, report) = pm.run(circuit);
     let opt_ms = t1.elapsed().as_millis();
 

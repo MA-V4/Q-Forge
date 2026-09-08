@@ -4,5 +4,8 @@ pub mod report;
 
 pub use pass::{Pass, PassReport};
 pub use passes::manager::PassManager;
-pub use passes::{GateCancellation, GateFusion, IdentityElimination, RotationMerging};
+pub use passes::{
+    GateCancellation, CommutationAnalysis,
+    GateFusion, IdentityElimination, RotationMerging
+};
 pub use report::OptimizationReport;
