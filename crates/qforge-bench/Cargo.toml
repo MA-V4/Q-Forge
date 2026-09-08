@@ -2,10 +2,13 @@
 name    = "qforge-bench"
 version = "0.1.0"
 edition = "2021"
-description = "Benchmarking suite — MQTBench integration, metrics, comparison"
+description = "Benchmarking suite — circuit metrics, comparison, HTML report"
 
 [dependencies]
-serde      = { workspace = true }
-serde_json = { workspace = true }
-thiserror  = { workspace = true }
-anyhow     = { workspace = true }
+qforge-ir        = { path = "../qforge-ir" }
+qforge-parser    = { path = "../qforge-parser" }
+qforge-optimizer = { path = "../qforge-optimizer" }
+qforge-noise     = { path = "../qforge-noise" }
+serde            = { workspace = true }
+serde_json       = { workspace = true }
+anyhow           = { workspace = true }

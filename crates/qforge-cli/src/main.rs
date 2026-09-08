@@ -4,19 +4,16 @@ use std::time::Instant;
 fn main() -> Result<()> {
     let args: Vec<String> = std::env::args().collect();
     match args.get(1).map(String::as_str) {
-        Some("compile") => cmd_compile(&args[2..]),
-        Some("ir") => cmd_ir(&args[2..]),
+        Some("compile")  => cmd_compile(&args[2..]),
+        Some("ir")       => cmd_ir(&args[2..]),
         Some("simulate") => cmd_simulate(&args[2..]),
-        Some("bench") => {
-            eprintln!("bench: Phase 6");
-            Ok(())
-        }
+        Some("bench")    => cmd_bench(&args[2..]),
         _ => {
             println!("QForge: an open-source quantum circuit compiler.\n");
             println!("  compile  <circuit.qasm> [--target linear|grid|heavy-hex] [--qubits N]");
             println!("  ir       <circuit.qasm>                  Dump IR as JSON");
             println!("  simulate <circuit.qasm> [--shots 1024]   Simulate statevector");
-            println!("  bench    --suite mqt                     Benchmark [Phase 6]");
+            println!("  bench    [--circuits circuits/] [--out results.json] [--html report.html]");
             Ok(())
         }
     }
@@ -247,5 +244,40 @@ fn cmd_ir(args: &[String]) -> Result<()> {
     let source = std::fs::read_to_string(path)?;
     let circuit = qforge_parser::parse(&source).map_err(|e| anyhow!("{}", e))?;
     println!("{}", serde_json::to_string_pretty(&circuit)?);
+    Ok(())
+}
+
+fn cmd_bench(args: &[String]) -> Result<()> {
+    let circuits_dir = flag(args, "--circuits").unwrap_or("circuits");
+    let out_json     = flag(args, "--out").unwrap_or("bench_results.json");
+    let out_html     = flag(args, "--html").unwrap_or("bench_report.html");
+
+    println!("\nQForge v{} — Benchmark Suite\n", env!("CARGO_PKG_VERSION"));
+    println!("  Circuits: {}", circuits_dir);
+    println!("  Running...\n");
+
+    let suite = qforge_bench::run_suite(circuits_dir)?;
+
+    println!();
+    println!("  =============================================");
+    println!("  SUMMARY");
+    println!("  =============================================");
+    println!("  Circuits compiled:    {}", suite.total_circuits);
+    println!("  Avg gate reduction:   {:.1}%", suite.avg_gate_reduction);
+    println!("  Avg fidelity:         {:.1}%", suite.avg_fidelity);
+    println!("  Total compile time:   {}ms", suite.total_compile_ms);
+    println!("  =============================================\n");
+
+    // Save JSON
+    let json = serde_json::to_string_pretty(&suite)?;
+    std::fs::write(out_json, &json)?;
+    println!("  Results saved to: {}", out_json);
+
+    // Save HTML report
+    let html = qforge_bench::generate_report(&suite);
+    std::fs::write(out_html, &html)?;
+    println!("  HTML report:      {}", out_html);
+    println!("  Open {} in your browser to see the dashboard.\n", out_html);
+
     Ok(())
 }

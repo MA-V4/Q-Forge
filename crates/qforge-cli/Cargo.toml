@@ -15,6 +15,7 @@ qforge-optimizer = { path = "../qforge-optimizer" }
 qforge-routing   = { path = "../qforge-routing" }
 qforge-noise     = { path = "../qforge-noise" }
 qforge-simulator = { path = "../qforge-simulator" }
+qforge-bench     = { path = "../qforge-bench" }
 serde            = { workspace = true }
 serde_json       = { workspace = true }
 anyhow           = { workspace = true }
