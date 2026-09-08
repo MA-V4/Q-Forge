@@ -12,6 +12,7 @@ path = "src/main.rs"
 qforge-ir        = { path = "../qforge-ir" }
 qforge-parser    = { path = "../qforge-parser" }
 qforge-optimizer = { path = "../qforge-optimizer" }
+qforge-routing   = { path = "../qforge-routing" }
 qforge-simulator = { path = "../qforge-simulator" }
 serde            = { workspace = true }
 serde_json       = { workspace = true }

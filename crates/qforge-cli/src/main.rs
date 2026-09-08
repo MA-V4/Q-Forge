@@ -20,7 +20,7 @@ fn main() -> Result<()> {
 }
 
 fn cmd_compile(args: &[String]) -> Result<()> {
-    let path = args.first().ok_or_else(|| anyhow!("usage: qforge compile <circuit.qasm>"))?;
+    let path = args.first().ok_or_else(|| anyhow!("usage: qforge compile <circuit.qasm> [--target linear|grid|heavy-hex] [--qubits N]"))?;
 
     let source = std::fs::read_to_string(path)
         .map_err(|e| anyhow!("cannot read {}: {}", path, e))?;
@@ -38,21 +38,41 @@ fn cmd_compile(args: &[String]) -> Result<()> {
     let t1 = Instant::now();
     let mut pm = qforge_optimizer::PassManager::new();
     pm.add_pass(qforge_optimizer::IdentityElimination)
-    .add_pass(qforge_optimizer::GateCancellation)
-    .add_pass(qforge_optimizer::RotationMerging)
-    .add_pass(qforge_optimizer::CommutationAnalysis)
-    .add_pass(qforge_optimizer::GateCancellation)
-    .add_pass(qforge_optimizer::RotationMerging)
-    .add_pass(qforge_optimizer::GateCancellation);
-    let (_out, report) = pm.run(circuit);
+      .add_pass(qforge_optimizer::GateCancellation)
+      .add_pass(qforge_optimizer::RotationMerging)
+      .add_pass(qforge_optimizer::CommutationAnalysis)
+      .add_pass(qforge_optimizer::GateCancellation)
+      .add_pass(qforge_optimizer::RotationMerging)
+      .add_pass(qforge_optimizer::GateCancellation);
+    let (optimized, report) = pm.run(circuit);
     let opt_ms = t1.elapsed().as_millis();
+
+    // Routing (optional)
+    let target_name  = flag(args, "--target");
+    let qubit_count: usize = flag(args, "--qubits")
+        .and_then(|s| s.parse().ok())
+        .unwrap_or(optimized.qubit_count().max(5));
+
+    let routing_result = target_name.map(|t| {
+        let topology = match t {
+            "grid"      => qforge_routing::HardwareTopology::grid(3, 3),
+            "heavy-hex" => qforge_routing::HardwareTopology::heavy_hex(qubit_count),
+            _           => qforge_routing::HardwareTopology::linear(qubit_count),
+        };
+        let mapping = qforge_routing::allocate_qubits(&optimized, &topology);
+        let (routed, r_report) = qforge_routing::route(&optimized, &topology, &mapping);
+        (topology, mapping, routed, r_report)
+    });
 
     println!("\nQForge v{}\n", env!("CARGO_PKG_VERSION"));
     println!("  Parsing...        done  ({}ms)", parse_ms);
-    println!("  Optimizing...     done  ({}ms)\n", opt_ms);
+    println!("  Optimizing...     done  ({}ms)", opt_ms);
+    if routing_result.is_some() {
+        println!("  Routing...        done");
+    }
 
     let w = 45;
-    println!("  {}", "=".repeat(w));
+    println!("\n  {}", "=".repeat(w));
     println!("  COMPILATION REPORT");
     println!("  {}", "=".repeat(w));
     println!();
@@ -62,12 +82,23 @@ fn cmd_compile(args: &[String]) -> Result<()> {
     println!("    2Q gates        {}", input_2q);
     println!("    Depth           {}", input_depth);
     println!();
-    println!("  Output");
+    println!("  Output (optimized)");
     println!("    Gates           {}      ({:+.1}%)", report.output_gates, -report.gate_reduction_pct());
     println!("    2Q gates        {}      ({})", report.output_2q,
         if report.input_2q > 0 { format!("{:+.1}%", -(report.input_2q as f64 - report.output_2q as f64) / report.input_2q as f64 * 100.0) } else { "n/a".into() });
     println!("    Depth           {}      ({:+.1}%)", report.output_depth, -report.depth_reduction_pct());
     println!();
+
+    if let Some((topology, mapping, _routed, r_report)) = &routing_result {
+        println!("  Hardware ({}):", topology.name);
+        println!("    Qubits          {}", topology.qubit_count);
+        println!("    Mapping         {:?}", mapping);
+        println!("    SWAPs inserted  {}", r_report.swaps_inserted);
+        println!("    SWAP cost (CX)  {}", r_report.swap_cost_in_cx);
+        println!("    Routed gates    {}", r_report.final_gate_count);
+        println!();
+    }
+
     println!("  Optimization breakdown");
     let mut total: i64 = 0;
     for pass in &report.passes {
@@ -83,6 +114,10 @@ fn cmd_compile(args: &[String]) -> Result<()> {
     println!("  {}\n", "=".repeat(w));
 
     Ok(())
+}
+
+fn flag<'a>(args: &'a [String], name: &str) -> Option<&'a str> {
+    args.windows(2).find(|w| w[0] == name).map(|w| w[1].as_str())
 }
 
 fn cmd_ir(args: &[String]) -> Result<()> {
