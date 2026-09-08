@@ -1,0 +1,497 @@
+$ cargo build
+    Blocking waiting for file lock on package cache
+    Blocking waiting for file lock on package cache
+   Compiling memchr v2.8.3
+   Compiling itoa v1.0.18
+   Compiling serde_core v1.0.229
+   Compiling zmij v1.0.23
+   Compiling anyhow v1.0.104
+   Compiling thiserror v1.0.69
+   Compiling serde_json v1.0.151                                                                                                                                           
+   Compiling serde v1.0.229
+   Compiling qforge-parser v0.1.0 (C:\Users\Mihran\Downloads\qforge-skeleton\qforge\crates\qforge-parser)                                                                  
+   Compiling qforge-ir v0.1.0 (C:\Users\Mihran\Downloads\qforge-skeleton\qforge\crates\qforge-ir)
+   Compiling qforge-optimizer v0.1.0 (C:\Users\Mihran\Downloads\qforge-skeleton\qforge\crates\qforge-optimizer)
+   Compiling qforge-simulator v0.1.0 (C:\Users\Mihran\Downloads\qforge-skeleton\qforge\crates\qforge-simulator)
+   Compiling qforge-bench v0.1.0 (C:\Users\Mihran\Downloads\qforge-skeleton\qforge\crates\qforge-bench)
+   Compiling qforge-server v0.1.0 (C:\Users\Mihran\Downloads\qforge-skeleton\qforge\crates\qforge-server)
+   Compiling qforge-noise v0.1.0 (C:\Users\Mihran\Downloads\qforge-skeleton\qforge\crates\qforge-noise)
+   Compiling qforge-routing v0.1.0 (C:\Users\Mihran\Downloads\qforge-skeleton\qforge\crates\qforge-routing)
+error[E0432]: unresolved import `qforge_ir`                                                                                                                                
+ --> crates\qforge-parser\src\parser.rs:5:5
+  |
+5 | use qforge_ir::{Circuit, Gate, QubitRef, CbitRef};
+  |     ^^^^^^^^^ use of unresolved module or unlinked crate `qforge_ir`
+  |
+  = help: if you wanted to use a crate named `qforge_ir`, use `cargo add qforge_ir` to add it to your `Cargo.toml`
+
+error[E0432]: unresolved import `qforge_ir`
+ --> crates\qforge-simulator\src\statevector.rs:5:5
+  |
+5 | use qforge_ir::Circuit;
+  |     ^^^^^^^^^ use of unresolved module or unlinked crate `qforge_ir`
+  |
+  = help: if you wanted to use a crate named `qforge_ir`, use `cargo add qforge_ir` to add it to your `Cargo.toml`
+
+error[E0432]: unresolved import `qforge_ir`                                                                                                                                
+ --> crates\qforge-optimizer\src\passes\cancellation.rs:6:5
+  |
+6 | use qforge_ir::{Circuit, Gate};
+  |     ^^^^^^^^^ use of unresolved module or unlinked crate `qforge_ir`
+  |
+  = help: if you wanted to use a crate named `qforge_ir`, use `cargo add qforge_ir` to add it to your `Cargo.toml`
+
+error[E0432]: unresolved import `qforge_ir`
+ --> crates\qforge-optimizer\src\passes\fusion.rs:4:5
+  |
+4 | use qforge_ir::Circuit;
+  |     ^^^^^^^^^ use of unresolved module or unlinked crate `qforge_ir`
+  |
+  = help: if you wanted to use a crate named `qforge_ir`, use `cargo add qforge_ir` to add it to your `Cargo.toml`
+
+error[E0432]: unresolved import `qforge_ir`
+ --> crates\qforge-optimizer\src\passes\identity.rs:6:5
+  |
+6 | use qforge_ir::{Circuit, Gate};
+  |     ^^^^^^^^^ use of unresolved module or unlinked crate `qforge_ir`
+  |
+  = help: if you wanted to use a crate named `qforge_ir`, use `cargo add qforge_ir` to add it to your `Cargo.toml`
+
+error[E0432]: unresolved import `qforge_ir`
+ --> crates\qforge-optimizer\src\passes\manager.rs:3:5
+  |
+3 | use qforge_ir::Circuit;
+  |     ^^^^^^^^^ use of unresolved module or unlinked crate `qforge_ir`
+  |
+  = help: if you wanted to use a crate named `qforge_ir`, use `cargo add qforge_ir` to add it to your `Cargo.toml`
+
+error[E0432]: unresolved import `qforge_ir`
+ --> crates\qforge-optimizer\src\passes\rotation.rs:6:5
+  |
+6 | use qforge_ir::{Circuit, Gate};
+  |     ^^^^^^^^^ use of unresolved module or unlinked crate `qforge_ir`
+  |
+  = help: if you wanted to use a crate named `qforge_ir`, use `cargo add qforge_ir` to add it to your `Cargo.toml`
+
+error[E0432]: unresolved import `qforge_ir`
+ --> crates\qforge-optimizer\src\pass.rs:1:5
+  |
+1 | use qforge_ir::Circuit;
+  |     ^^^^^^^^^ use of unresolved module or unlinked crate `qforge_ir`
+  |
+  = help: if you wanted to use a crate named `qforge_ir`, use `cargo add qforge_ir` to add it to your `Cargo.toml`
+
+For more information about this error, try `rustc --explain E0432`.                                                                                                        
+error[E0531]: cannot find tuple struct or tuple variant `H` in this scope                                                                                                  
+  --> crates\qforge-optimizer\src\passes\cancellation.rs:45:10
+   |
+45 |         (H(q1),    H(q2))    => q1 == q2,
+   |          ^ not found in this scope
+
+error: could not compile `qforge-simulator` (lib) due to 1 previous error
+warning: build failed, waiting for other jobs to finish...
+error[E0531]: cannot find tuple struct or tuple variant `H` in this scope
+  --> crates\qforge-optimizer\src\passes\cancellation.rs:45:20
+   |
+45 |         (H(q1),    H(q2))    => q1 == q2,
+   |                    ^ not found in this scope
+
+error[E0531]: cannot find tuple struct or tuple variant `X` in this scope
+  --> crates\qforge-optimizer\src\passes\cancellation.rs:46:10
+   |
+46 |         (X(q1),    X(q2))    => q1 == q2,
+   |          ^ not found in this scope
+
+error[E0531]: cannot find tuple struct or tuple variant `X` in this scope
+  --> crates\qforge-optimizer\src\passes\cancellation.rs:46:20
+   |
+46 |         (X(q1),    X(q2))    => q1 == q2,
+   |                    ^ not found in this scope
+
+error[E0531]: cannot find tuple struct or tuple variant `Y` in this scope
+  --> crates\qforge-optimizer\src\passes\cancellation.rs:47:10
+   |
+47 |         (Y(q1),    Y(q2))    => q1 == q2,
+   |          ^ not found in this scope
+
+error[E0531]: cannot find tuple struct or tuple variant `Y` in this scope
+  --> crates\qforge-optimizer\src\passes\cancellation.rs:47:20
+   |
+47 |         (Y(q1),    Y(q2))    => q1 == q2,
+   |                    ^ not found in this scope
+
+error[E0531]: cannot find tuple struct or tuple variant `Z` in this scope
+  --> crates\qforge-optimizer\src\passes\cancellation.rs:48:10
+   |
+48 |         (Z(q1),    Z(q2))    => q1 == q2,
+   |          ^ not found in this scope
+
+error[E0531]: cannot find tuple struct or tuple variant `Z` in this scope
+  --> crates\qforge-optimizer\src\passes\cancellation.rs:48:20
+   |
+48 |         (Z(q1),    Z(q2))    => q1 == q2,
+   |                    ^ not found in this scope
+
+error[E0531]: cannot find tuple struct or tuple variant `S` in this scope
+  --> crates\qforge-optimizer\src\passes\cancellation.rs:49:10
+   |
+49 |         (S(q1),    Sdg(q2))  => q1 == q2,
+   |          ^ not found in this scope
+
+error[E0531]: cannot find tuple struct or tuple variant `Sdg` in this scope
+  --> crates\qforge-optimizer\src\passes\cancellation.rs:49:20
+   |
+49 |         (S(q1),    Sdg(q2))  => q1 == q2,
+   |                    ^^^ not found in this scope
+
+error[E0531]: cannot find tuple struct or tuple variant `Sdg` in this scope
+  --> crates\qforge-optimizer\src\passes\cancellation.rs:50:10
+   |
+50 |         (Sdg(q1),  S(q2))    => q1 == q2,
+   |          ^^^ not found in this scope
+
+error[E0531]: cannot find tuple struct or tuple variant `S` in this scope
+  --> crates\qforge-optimizer\src\passes\cancellation.rs:50:20
+   |
+50 |         (Sdg(q1),  S(q2))    => q1 == q2,
+   |                    ^ not found in this scope
+
+error[E0531]: cannot find tuple struct or tuple variant `T` in this scope
+  --> crates\qforge-optimizer\src\passes\cancellation.rs:51:10
+   |
+51 |         (T(q1),    Tdg(q2))  => q1 == q2,
+   |          ^ not found in this scope
+
+error[E0531]: cannot find tuple struct or tuple variant `Tdg` in this scope
+  --> crates\qforge-optimizer\src\passes\cancellation.rs:51:20
+   |
+51 |         (T(q1),    Tdg(q2))  => q1 == q2,
+   |                    ^^^ not found in this scope
+
+error[E0531]: cannot find tuple struct or tuple variant `Tdg` in this scope
+  --> crates\qforge-optimizer\src\passes\cancellation.rs:52:10
+   |
+52 |         (Tdg(q1),  T(q2))    => q1 == q2,
+   |          ^^^ not found in this scope
+
+error[E0531]: cannot find tuple struct or tuple variant `T` in this scope
+  --> crates\qforge-optimizer\src\passes\cancellation.rs:52:20
+   |
+52 |         (Tdg(q1),  T(q2))    => q1 == q2,
+   |                    ^ not found in this scope
+
+error[E0531]: cannot find tuple struct or tuple variant `Cx` in this scope
+  --> crates\qforge-optimizer\src\passes\cancellation.rs:53:10
+   |
+53 |         (Cx(c1,t1), Cx(c2,t2)) => c1 == c2 && t1 == t2,
+   |          ^^ not found in this scope
+
+error[E0531]: cannot find tuple struct or tuple variant `Cx` in this scope
+  --> crates\qforge-optimizer\src\passes\cancellation.rs:53:21
+   |
+53 |         (Cx(c1,t1), Cx(c2,t2)) => c1 == c2 && t1 == t2,
+   |                     ^^ not found in this scope
+
+error[E0531]: cannot find tuple struct or tuple variant `Cz` in this scope
+  --> crates\qforge-optimizer\src\passes\cancellation.rs:54:10
+   |
+54 |         (Cz(q1a,q1b), Cz(q2a,q2b)) => q1a == q2a && q1b == q2b,
+   |          ^^ not found in this scope
+
+error[E0531]: cannot find tuple struct or tuple variant `Cz` in this scope
+  --> crates\qforge-optimizer\src\passes\cancellation.rs:54:23
+   |
+54 |         (Cz(q1a,q1b), Cz(q2a,q2b)) => q1a == q2a && q1b == q2b,
+   |                       ^^ not found in this scope
+
+error[E0531]: cannot find tuple struct or tuple variant `Rz` in this scope
+  --> crates\qforge-optimizer\src\passes\cancellation.rs:55:10
+   |
+55 |         (Rz(a, q1), Rz(b, q2)) => q1 == q2 && (a + b).abs() < 1e-10,
+   |          ^^ not found in this scope
+
+error[E0531]: cannot find tuple struct or tuple variant `Rz` in this scope
+  --> crates\qforge-optimizer\src\passes\cancellation.rs:55:21
+   |
+55 |         (Rz(a, q1), Rz(b, q2)) => q1 == q2 && (a + b).abs() < 1e-10,
+   |                     ^^ not found in this scope
+
+error[E0531]: cannot find tuple struct or tuple variant `Rx` in this scope
+  --> crates\qforge-optimizer\src\passes\cancellation.rs:56:10
+   |
+56 |         (Rx(a, q1), Rx(b, q2)) => q1 == q2 && (a + b).abs() < 1e-10,
+   |          ^^ not found in this scope
+
+error[E0531]: cannot find tuple struct or tuple variant `Rx` in this scope
+  --> crates\qforge-optimizer\src\passes\cancellation.rs:56:21
+   |
+56 |         (Rx(a, q1), Rx(b, q2)) => q1 == q2 && (a + b).abs() < 1e-10,
+   |                     ^^ not found in this scope
+
+error[E0531]: cannot find tuple struct or tuple variant `Ry` in this scope
+  --> crates\qforge-optimizer\src\passes\cancellation.rs:57:10
+   |
+57 |         (Ry(a, q1), Ry(b, q2)) => q1 == q2 && (a + b).abs() < 1e-10,
+   |          ^^ not found in this scope
+
+error[E0531]: cannot find tuple struct or tuple variant `Ry` in this scope
+  --> crates\qforge-optimizer\src\passes\cancellation.rs:57:21
+   |
+57 |         (Ry(a, q1), Ry(b, q2)) => q1 == q2 && (a + b).abs() < 1e-10,
+   |                     ^^ not found in this scope
+
+error: could not compile `qforge-parser` (lib) due to 1 previous error                                                                                                     
+warning: unused import: `crate::pass::PassReport`                                                                                                                          
+ --> crates\qforge-optimizer\src\report.rs:1:5
+  |
+1 | use crate::pass::PassReport;
+  |     ^^^^^^^^^^^^^^^^^^^^^^^
+  |
+  = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+Some errors have detailed explanations: E0432, E0531.                                                                                                                      
+For more information about an error, try `rustc --explain E0432`.
+warning: `qforge-optimizer` (lib) generated 1 warning                                                                                                                      
+error: could not compile `qforge-optimizer` (lib) due to 32 previous errors; 1 warning emitted
+                                                                                                                                                                           
+Mihran@DESKTOP-S2C05TC MINGW64 ~/Downloads/qforge-skeleton/qforge
+$ cargo run --bin qforge -- compile circuits/ghz.qasm
+   Compiling qforge-simulator v0.1.0 (C:\Users\Mihran\Downloads\qforge-skeleton\qforge\crates\qforge-simulator)
+   Compiling qforge-parser v0.1.0 (C:\Users\Mihran\Downloads\qforge-skeleton\qforge\crates\qforge-parser)
+   Compiling qforge-optimizer v0.1.0 (C:\Users\Mihran\Downloads\qforge-skeleton\qforge\crates\qforge-optimizer)
+error[E0432]: unresolved import `qforge_ir`                                                                                                                                
+ --> crates\qforge-simulator\src\statevector.rs:5:5
+  |
+5 | use qforge_ir::Circuit;
+  |     ^^^^^^^^^ use of unresolved module or unlinked crate `qforge_ir`
+  |
+  = help: if you wanted to use a crate named `qforge_ir`, use `cargo add qforge_ir` to add it to your `Cargo.toml`
+
+error[E0432]: unresolved import `qforge_ir`                                                                                                                                
+ --> crates\qforge-parser\src\parser.rs:5:5
+  |
+5 | use qforge_ir::{Circuit, Gate, QubitRef, CbitRef};
+  |     ^^^^^^^^^ use of unresolved module or unlinked crate `qforge_ir`
+  |
+  = help: if you wanted to use a crate named `qforge_ir`, use `cargo add qforge_ir` to add it to your `Cargo.toml`
+
+error[E0432]: unresolved import `qforge_ir`                                                                                                                                
+ --> crates\qforge-optimizer\src\passes\cancellation.rs:6:5
+  |
+6 | use qforge_ir::{Circuit, Gate};
+  |     ^^^^^^^^^ use of unresolved module or unlinked crate `qforge_ir`
+  |
+  = help: if you wanted to use a crate named `qforge_ir`, use `cargo add qforge_ir` to add it to your `Cargo.toml`
+
+error[E0432]: unresolved import `qforge_ir`                                                                                                                                
+ --> crates\qforge-optimizer\src\passes\fusion.rs:4:5
+  |
+4 | use qforge_ir::Circuit;
+  |     ^^^^^^^^^ use of unresolved module or unlinked crate `qforge_ir`
+  |
+  = help: if you wanted to use a crate named `qforge_ir`, use `cargo add qforge_ir` to add it to your `Cargo.toml`
+
+error[E0432]: unresolved import `qforge_ir`
+ --> crates\qforge-optimizer\src\passes\identity.rs:6:5
+  |
+6 | use qforge_ir::{Circuit, Gate};
+  |     ^^^^^^^^^ use of unresolved module or unlinked crate `qforge_ir`
+  |
+  = help: if you wanted to use a crate named `qforge_ir`, use `cargo add qforge_ir` to add it to your `Cargo.toml`
+
+error[E0432]: unresolved import `qforge_ir`                                                                                                                                
+ --> crates\qforge-optimizer\src\passes\manager.rs:3:5
+  |
+3 | use qforge_ir::Circuit;
+  |     ^^^^^^^^^ use of unresolved module or unlinked crate `qforge_ir`
+  |
+  = help: if you wanted to use a crate named `qforge_ir`, use `cargo add qforge_ir` to add it to your `Cargo.toml`
+
+error[E0432]: unresolved import `qforge_ir`                                                                                                                                
+ --> crates\qforge-optimizer\src\passes\rotation.rs:6:5
+  |
+6 | use qforge_ir::{Circuit, Gate};
+  |     ^^^^^^^^^ use of unresolved module or unlinked crate `qforge_ir`
+  |
+  = help: if you wanted to use a crate named `qforge_ir`, use `cargo add qforge_ir` to add it to your `Cargo.toml`
+
+error[E0432]: unresolved import `qforge_ir`
+ --> crates\qforge-optimizer\src\pass.rs:1:5
+  |
+1 | use qforge_ir::Circuit;
+  |     ^^^^^^^^^ use of unresolved module or unlinked crate `qforge_ir`
+  |
+  = help: if you wanted to use a crate named `qforge_ir`, use `cargo add qforge_ir` to add it to your `Cargo.toml`
+
+For more information about this error, try `rustc --explain E0432`.                                                                                                        
+error: could not compile `qforge-simulator` (lib) due to 1 previous error                                                                                                  
+warning: build failed, waiting for other jobs to finish...
+error: could not compile `qforge-parser` (lib) due to 1 previous error                                                                                                     
+error[E0531]: cannot find tuple struct or tuple variant `H` in this scope                                                                                                  
+  --> crates\qforge-optimizer\src\passes\cancellation.rs:45:10
+   |
+45 |         (H(q1),    H(q2))    => q1 == q2,
+   |          ^ not found in this scope
+
+error[E0531]: cannot find tuple struct or tuple variant `H` in this scope
+  --> crates\qforge-optimizer\src\passes\cancellation.rs:45:20
+   |
+45 |         (H(q1),    H(q2))    => q1 == q2,
+   |                    ^ not found in this scope
+
+error[E0531]: cannot find tuple struct or tuple variant `X` in this scope
+  --> crates\qforge-optimizer\src\passes\cancellation.rs:46:10
+   |
+46 |         (X(q1),    X(q2))    => q1 == q2,
+   |          ^ not found in this scope
+
+error[E0531]: cannot find tuple struct or tuple variant `X` in this scope
+  --> crates\qforge-optimizer\src\passes\cancellation.rs:46:20
+   |
+46 |         (X(q1),    X(q2))    => q1 == q2,
+   |                    ^ not found in this scope
+
+error[E0531]: cannot find tuple struct or tuple variant `Y` in this scope
+  --> crates\qforge-optimizer\src\passes\cancellation.rs:47:10
+   |
+47 |         (Y(q1),    Y(q2))    => q1 == q2,
+   |          ^ not found in this scope
+
+error[E0531]: cannot find tuple struct or tuple variant `Y` in this scope
+  --> crates\qforge-optimizer\src\passes\cancellation.rs:47:20
+   |
+47 |         (Y(q1),    Y(q2))    => q1 == q2,
+   |                    ^ not found in this scope
+
+error[E0531]: cannot find tuple struct or tuple variant `Z` in this scope
+  --> crates\qforge-optimizer\src\passes\cancellation.rs:48:10
+   |
+48 |         (Z(q1),    Z(q2))    => q1 == q2,
+   |          ^ not found in this scope
+
+error[E0531]: cannot find tuple struct or tuple variant `Z` in this scope
+  --> crates\qforge-optimizer\src\passes\cancellation.rs:48:20
+   |
+48 |         (Z(q1),    Z(q2))    => q1 == q2,
+   |                    ^ not found in this scope
+
+error[E0531]: cannot find tuple struct or tuple variant `S` in this scope
+  --> crates\qforge-optimizer\src\passes\cancellation.rs:49:10
+   |
+49 |         (S(q1),    Sdg(q2))  => q1 == q2,
+   |          ^ not found in this scope
+
+error[E0531]: cannot find tuple struct or tuple variant `Sdg` in this scope
+  --> crates\qforge-optimizer\src\passes\cancellation.rs:49:20
+   |
+49 |         (S(q1),    Sdg(q2))  => q1 == q2,
+   |                    ^^^ not found in this scope
+
+error[E0531]: cannot find tuple struct or tuple variant `Sdg` in this scope
+  --> crates\qforge-optimizer\src\passes\cancellation.rs:50:10
+   |
+50 |         (Sdg(q1),  S(q2))    => q1 == q2,
+   |          ^^^ not found in this scope
+
+error[E0531]: cannot find tuple struct or tuple variant `S` in this scope
+  --> crates\qforge-optimizer\src\passes\cancellation.rs:50:20
+   |
+50 |         (Sdg(q1),  S(q2))    => q1 == q2,
+   |                    ^ not found in this scope
+
+error[E0531]: cannot find tuple struct or tuple variant `T` in this scope
+  --> crates\qforge-optimizer\src\passes\cancellation.rs:51:10
+   |
+51 |         (T(q1),    Tdg(q2))  => q1 == q2,
+   |          ^ not found in this scope
+
+error[E0531]: cannot find tuple struct or tuple variant `Tdg` in this scope
+  --> crates\qforge-optimizer\src\passes\cancellation.rs:51:20
+   |
+51 |         (T(q1),    Tdg(q2))  => q1 == q2,
+   |                    ^^^ not found in this scope
+
+error[E0531]: cannot find tuple struct or tuple variant `Tdg` in this scope
+  --> crates\qforge-optimizer\src\passes\cancellation.rs:52:10
+   |
+52 |         (Tdg(q1),  T(q2))    => q1 == q2,
+   |          ^^^ not found in this scope
+
+error[E0531]: cannot find tuple struct or tuple variant `T` in this scope
+  --> crates\qforge-optimizer\src\passes\cancellation.rs:52:20
+   |
+52 |         (Tdg(q1),  T(q2))    => q1 == q2,
+   |                    ^ not found in this scope
+
+error[E0531]: cannot find tuple struct or tuple variant `Cx` in this scope
+  --> crates\qforge-optimizer\src\passes\cancellation.rs:53:10
+   |
+53 |         (Cx(c1,t1), Cx(c2,t2)) => c1 == c2 && t1 == t2,
+   |          ^^ not found in this scope
+
+error[E0531]: cannot find tuple struct or tuple variant `Cx` in this scope
+  --> crates\qforge-optimizer\src\passes\cancellation.rs:53:21
+   |
+53 |         (Cx(c1,t1), Cx(c2,t2)) => c1 == c2 && t1 == t2,
+   |                     ^^ not found in this scope
+
+error[E0531]: cannot find tuple struct or tuple variant `Cz` in this scope
+  --> crates\qforge-optimizer\src\passes\cancellation.rs:54:10
+   |
+54 |         (Cz(q1a,q1b), Cz(q2a,q2b)) => q1a == q2a && q1b == q2b,
+   |          ^^ not found in this scope
+
+error[E0531]: cannot find tuple struct or tuple variant `Cz` in this scope
+  --> crates\qforge-optimizer\src\passes\cancellation.rs:54:23
+   |
+54 |         (Cz(q1a,q1b), Cz(q2a,q2b)) => q1a == q2a && q1b == q2b,
+   |                       ^^ not found in this scope
+
+error[E0531]: cannot find tuple struct or tuple variant `Rz` in this scope
+  --> crates\qforge-optimizer\src\passes\cancellation.rs:55:10
+   |
+55 |         (Rz(a, q1), Rz(b, q2)) => q1 == q2 && (a + b).abs() < 1e-10,
+   |          ^^ not found in this scope
+
+error[E0531]: cannot find tuple struct or tuple variant `Rz` in this scope
+  --> crates\qforge-optimizer\src\passes\cancellation.rs:55:21
+   |
+55 |         (Rz(a, q1), Rz(b, q2)) => q1 == q2 && (a + b).abs() < 1e-10,
+   |                     ^^ not found in this scope
+
+error[E0531]: cannot find tuple struct or tuple variant `Rx` in this scope
+  --> crates\qforge-optimizer\src\passes\cancellation.rs:56:10
+   |
+56 |         (Rx(a, q1), Rx(b, q2)) => q1 == q2 && (a + b).abs() < 1e-10,
+   |          ^^ not found in this scope
+
+error[E0531]: cannot find tuple struct or tuple variant `Rx` in this scope
+  --> crates\qforge-optimizer\src\passes\cancellation.rs:56:21
+   |
+56 |         (Rx(a, q1), Rx(b, q2)) => q1 == q2 && (a + b).abs() < 1e-10,
+   |                     ^^ not found in this scope
+
+error[E0531]: cannot find tuple struct or tuple variant `Ry` in this scope
+  --> crates\qforge-optimizer\src\passes\cancellation.rs:57:10
+   |
+57 |         (Ry(a, q1), Ry(b, q2)) => q1 == q2 && (a + b).abs() < 1e-10,
+   |          ^^ not found in this scope
+
+error[E0531]: cannot find tuple struct or tuple variant `Ry` in this scope
+  --> crates\qforge-optimizer\src\passes\cancellation.rs:57:21
+   |
+57 |         (Ry(a, q1), Ry(b, q2)) => q1 == q2 && (a + b).abs() < 1e-10,
+   |                     ^^ not found in this scope
+
+warning: unused import: `crate::pass::PassReport`                                                                                                                          
+ --> crates\qforge-optimizer\src\report.rs:1:5
+  |
+1 | use crate::pass::PassReport;
+  |     ^^^^^^^^^^^^^^^^^^^^^^^
+  |
+  = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+Some errors have detailed explanations: E0432, E0531.                                                                                                                      
+For more information about an error, try `rustc --explain E0432`.
+warning: `qforge-optimizer` (lib) generated 1 warning                                                                                                                      
+error: could not compile `qforge-optimizer` (lib) due to 32 previous errors; 1 warning emitted

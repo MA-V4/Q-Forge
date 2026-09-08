@@ -1,0 +1,12 @@
+[package]
+name    = "qforge-simulator"
+version = "0.1.0"
+edition = "2021"
+description = "Statevector simulator — pure and noisy circuit evaluation"
+
+[dependencies]
+qforge-ir  = { path = "../qforge-ir" }
+serde      = { workspace = true }
+serde_json = { workspace = true }
+thiserror  = { workspace = true }
+anyhow     = { workspace = true }

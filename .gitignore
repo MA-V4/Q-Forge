@@ -1,0 +1,58 @@
+# Rust build artifacts
+target/
+Cargo.lock
+
+# IDE
+.vscode/
+.idea/
+*.iml
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Environment
+.env
+.env.local
+
+# Quantum circuit outputs
+*.compiled.qasm
+*.optimized.qasm
+
+# Benchmark outputs
+bench_results/
+*.sqlite
+*.db
+
+# Python (for future PyO3 bindings)
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+venv/
+dist/
+*.egg-info/
+.eggs/
+
+# Node (for future dashboard)
+node_modules/
+.next/
+out/
+
+# Logs
+*.log
+logs/
+
+# Profiling
+perf.data
+flamegraph.svg
+*.prof
+
+# Hardware calibration data (may contain sensitive API credentials)
+hardware/calibration/
+*.calibration.json
+
+# API keys
+ibm_quantum_credentials.json
+*.credentials.json

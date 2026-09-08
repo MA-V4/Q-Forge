@@ -1,0 +1,11 @@
+[package]
+name    = "qforge-server"
+version = "0.1.0"
+edition = "2021"
+description = "HTTP API — Axum server for dashboard integration"
+
+[dependencies]
+serde      = { workspace = true }
+serde_json = { workspace = true }
+thiserror  = { workspace = true }
+anyhow     = { workspace = true }

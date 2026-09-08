@@ -1,0 +1,12 @@
+[package]
+name    = "qforge-optimizer"
+version = "0.1.0"
+edition = "2021"
+description = "Optimization pass manager — gate cancellation, rotation merging, fusion"
+
+[dependencies]
+qforge-ir  = { path = "../qforge-ir" }
+serde      = { workspace = true }
+serde_json = { workspace = true }
+thiserror  = { workspace = true }
+anyhow     = { workspace = true }

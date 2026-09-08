@@ -1,0 +1,18 @@
+[package]
+name    = "qforge-cli"
+version = "0.1.0"
+edition = "2021"
+description = "QForge command-line interface"
+
+[[bin]]
+name = "qforge"
+path = "src/main.rs"
+
+[dependencies]
+qforge-ir        = { path = "../qforge-ir" }
+qforge-parser    = { path = "../qforge-parser" }
+qforge-optimizer = { path = "../qforge-optimizer" }
+qforge-simulator = { path = "../qforge-simulator" }
+serde            = { workspace = true }
+serde_json       = { workspace = true }
+anyhow           = { workspace = true }

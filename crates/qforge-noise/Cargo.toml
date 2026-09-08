@@ -1,0 +1,11 @@
+[package]
+name    = "qforge-noise"
+version = "0.1.0"
+edition = "2021"
+description = "Noise models, fidelity estimation, cost functions"
+
+[dependencies]
+serde      = { workspace = true }
+serde_json = { workspace = true }
+thiserror  = { workspace = true }
+anyhow     = { workspace = true }
