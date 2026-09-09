@@ -138,6 +138,8 @@ fn remap_gate(gate: &Gate, log_to_phys: &[usize], logical_index: &HashMap<String
         Gate::Measure(q, c) => Gate::Measure(remap(q), c.clone()),
         Gate::Reset(q) => Gate::Reset(remap(q)),
         Gate::Barrier(qs) => Gate::Barrier(qs.iter().map(remap).collect()),
+        Gate::Sx(q)   => Gate::Sx(remap(q)),
+        Gate::Sxdg(q) => Gate::Sxdg(remap(q)),
         Gate::Custom {
             name,
             params,
