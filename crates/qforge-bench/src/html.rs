@@ -1,15 +1,21 @@
 use crate::metrics::BenchmarkSuite;
 
 pub fn generate_report(suite: &BenchmarkSuite) -> String {
-    let names: Vec<String> = suite.results.iter()
+    let names: Vec<String> = suite
+        .results
+        .iter()
         .map(|r| format!("\"{}\"", r.name))
         .collect();
 
-    let gate_reductions: Vec<String> = suite.results.iter()
+    let gate_reductions: Vec<String> = suite
+        .results
+        .iter()
         .map(|r| format!("{:.1}", r.gate_reduction_pct))
         .collect();
 
-    let fidelities: Vec<String> = suite.results.iter()
+    let fidelities: Vec<String> = suite
+        .results
+        .iter()
         .map(|r| format!("{:.1}", r.fidelity_pct))
         .collect();
 
@@ -43,7 +49,8 @@ pub fn generate_report(suite: &BenchmarkSuite) -> String {
         )
     }).collect::<Vec<_>>().join("\n");
 
-    format!(r#"<!DOCTYPE html>
+    format!(
+        r#"<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -312,14 +319,14 @@ new Chart(document.getElementById('fidelityChart'), {{
 </script>
 </body>
 </html>"#,
-        version         = suite.qforge_version,
-        total           = suite.total_circuits,
-        avg_gate        = suite.avg_gate_reduction,
-        avg_fid         = suite.avg_fidelity,
-        ms              = suite.total_compile_ms,
-        rows            = rows,
-        names           = names.join(", "),
+        version = suite.qforge_version,
+        total = suite.total_circuits,
+        avg_gate = suite.avg_gate_reduction,
+        avg_fid = suite.avg_fidelity,
+        ms = suite.total_compile_ms,
+        rows = rows,
+        names = names.join(", "),
         gate_reductions = gate_reductions.join(", "),
-        fidelities      = fidelities.join(", "),
+        fidelities = fidelities.join(", "),
     )
 }

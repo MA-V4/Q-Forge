@@ -1,5 +1,4 @@
 use serde::{Deserialize, Serialize};
-use std::collections::HashMap;
 
 /// Per-qubit error characteristics.
 #[derive(Debug, Clone, Serialize, Deserialize)]

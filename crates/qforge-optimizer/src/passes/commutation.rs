@@ -169,9 +169,21 @@ fn qubit_set(gate: &Gate) -> HashSet<String> {
 fn gate_qubits(gate: &Gate) -> Vec<QubitRef> {
     use Gate::*;
     match gate {
-        H(q) | X(q) | Y(q) | Z(q) | S(q) | Sdg(q) | T(q) | Tdg(q)
-        | Sx(q) | Sxdg(q)
-        | Rx(_, q) | Ry(_, q) | Rz(_, q) | U1(_, q) | Reset(q) => vec![q.clone()],
+        H(q)
+        | X(q)
+        | Y(q)
+        | Z(q)
+        | S(q)
+        | Sdg(q)
+        | T(q)
+        | Tdg(q)
+        | Sx(q)
+        | Sxdg(q)
+        | Rx(_, q)
+        | Ry(_, q)
+        | Rz(_, q)
+        | U1(_, q)
+        | Reset(q) => vec![q.clone()],
         U2(_, _, q) | U3(_, _, _, q) => vec![q.clone()],
         Cx(c, t) | Cz(c, t) | Swap(c, t) => vec![c.clone(), t.clone()],
         Ccx(a, b, c) => vec![a.clone(), b.clone(), c.clone()],

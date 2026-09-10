@@ -84,7 +84,9 @@ pub fn simulate(circuit: &Circuit, shots: usize) -> SimulationResult {
 }
 
 fn lcg_random(state: &mut u64) -> f64 {
-    *state = state.wrapping_mul(6364136223846793005).wrapping_add(1442695040888963407);
+    *state = state
+        .wrapping_mul(6364136223846793005)
+        .wrapping_add(1442695040888963407);
     (*state >> 11) as f64 * (1.0 / (1u64 << 53) as f64)
 }
 

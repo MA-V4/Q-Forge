@@ -49,7 +49,7 @@ impl CostFunction {
 /// Run multiple compilation strategies, score each, return ranked results.
 pub fn evaluate_strategies(
     circuit: &Circuit,
-    noise: &NoiseModel,
+    _noise: &NoiseModel,
 ) -> Vec<(CompilationStrategy, f64)> {
     let baseline = circuit.gate_count();
 

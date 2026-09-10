@@ -2,7 +2,7 @@
 // Each gate is represented as a 2x2 or 4x4 complex matrix.
 
 use num_complex::Complex64;
-use std::f64::consts::{FRAC_1_SQRT_2};
+use std::f64::consts::FRAC_1_SQRT_2;
 
 pub type Matrix2 = [[Complex64; 2]; 2];
 pub type Matrix4 = [[Complex64; 4]; 4];

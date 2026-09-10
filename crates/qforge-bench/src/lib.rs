@@ -1,7 +1,7 @@
+pub mod html;
 pub mod metrics;
 pub mod runner;
-pub mod html;
 
+pub use html::generate_report;
 pub use metrics::{BenchmarkResult, BenchmarkSuite};
 pub use runner::run_suite;
-pub use html::generate_report;
