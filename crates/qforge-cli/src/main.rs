@@ -53,11 +53,12 @@ fn cmd_compile(args: &[String]) -> Result<()> {
 
     // Native gate decomposition (optional — must run before routing)
     let native = args.iter().any(|a| a == "--native");
-    let optimized = if native {
+        let optimized = if native {
         let mut pm2 = qforge_optimizer::PassManager::new();
         pm2.add_pass(qforge_optimizer::NativeGateDecomposition)
-           .add_pass(qforge_optimizer::RotationMerging)
-           .add_pass(qforge_optimizer::GateCancellation);
+        .add_pass(qforge_optimizer::GateFusion)
+        .add_pass(qforge_optimizer::RotationMerging)
+        .add_pass(qforge_optimizer::GateCancellation);
         let (decomposed, _) = pm2.run(optimized);
         decomposed
     } else {

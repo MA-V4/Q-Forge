@@ -6,7 +6,7 @@ pub use pass::{Pass, PassReport};
 pub use passes::manager::PassManager;
 pub use passes::{
     GateCancellation, CommutationAnalysis,
-    NativeGateDecomposition,
-    GateFusion, IdentityElimination, RotationMerging,
+    GateFusion, NativeGateDecomposition,
+    IdentityElimination, RotationMerging,
 };
 pub use report::OptimizationReport;
